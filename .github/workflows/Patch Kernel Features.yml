@@ -108,4 +108,30 @@ jobs:
           
           patch -p1 < ../susfs4ksu/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch
           cd ..
+
+                - name: Setup NoMount / Mountify
+        if: ${{ github.event.inputs.nomount == 'true' }}
+        run: |
+          echo "Mempersiapkan NoMount..."
+          
+          # Deteksi direktori root aktif
+          if [ -d "KernelSU-Next" ]; then
+            cd KernelSU-Next
+          elif [ -d "KernelSU" ]; then
+            cd KernelSU
+          else
+            echo "Folder root tidak ditemukan! Lewati patch."
+            exit 1
+          fi
+
+          echo "Mengunduh file patch NoMount..."
+          # Mengambil referensi patch NoMount dari repositori GKI_KernelSU_SUSFS
+          curl -o nomount.patch -LSs "https://raw.githubusercontent.com/cogan17/GKI_KernelSU_SUSFS/main/patches/nomount.patch"
+
+          echo "Menerapkan patch NoMount ke modul root..."
+          patch -p1 < nomount.patch || echo "Peringatan: Beberapa bagian patch mungkin sudah diterapkan atau tidak cocok, namun proses akan berlanjut."
+          
+          # Membersihkan file patch yang sudah dipakai
+          rm nomount.patch
+          cd ..
           
