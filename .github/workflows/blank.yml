@@ -1,0 +1,34 @@
+name: Build Kernels
+
+on:
+  workflow_dispatch:
+    inputs:
+      root_flavor:
+        description: 'Root Flavor'
+        required: true
+        type: choice
+        options:
+          - 'All(KernelSU-Next + KernelSU + ReSukiSU)'
+          - 'KernelSU-Next'
+          - 'KernelSU'
+      susfs:
+        description: 'SUSFS'
+        required: true
+        type: boolean
+        default: true
+      nomount:
+        description: 'NoMount'
+        required: true
+        type: boolean
+        default: true
+      baseband_guard:
+        description: 'Baseband Guard'
+        required: true
+        type: boolean
+        default: true
+      networking:
+        description: 'Networking'
+        required: true
+        type: boolean
+        default: true
+      # Anda dapat menambahkan input boolean lainnya seperti Droid4Spaces, NTSync, dll sesuai gambar
